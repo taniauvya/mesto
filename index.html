@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./pages/index.css" />
+  <title>Mesto</title>
+</head>
+
+<body class="page">
+  <header class="header">
+    <img class="header__logo" src="./images/logo.svg" alt="логотип Россия" />
+  </header>
+  <main class="content">
+    <section class="profile">
+      <img src="./images/Avatar.jpg" alt="Аватар Кусто" class="profile__image" />
+      <div class="profile__info">
+        <div class="profile__name-edit">
+          <h1 id="profile-name" class="profile__name">Жак-Ив Кусто</h1>
+          <button id="profile-button-edit" aria-label="Редактировать профиль" class="profile__button-edit"
+            type="button"></button>
+        </div>
+        <p id="profile-job" class="profile__job">Исследователь океана</p>
+      </div>
+
+      <button aria-label="Загрузить изображение" class="profile__button-add" type="button"></button>
+    </section>
+    <section class="elements">
+      <ul class="elements__list">
+        <li class="elements__card">
+          <img src="./images/Karachaevsk.jpg" alt="Карачаевск" class="elements__image" />
+          <div class="elements__footer">
+            <h2 class="elements__title">Карачаевск</h2>
+            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
+          </div>
+        </li>
+        <li class="elements__card">
+          <img src="./images/Ilbrus.jpg" alt="Эльбрус" class="elements__image" />
+          <div class="elements__footer">
+            <h2 class="elements__title">Гора Эльбрус</h2>
+            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
+          </div>
+        </li>
+        <li class="elements__card">
+          <img src="./images/Dombay.jpg" alt="Домбай" class="elements__image" />
+          <div class="elements__footer">
+            <h2 class="elements__title">Домбай</h2>
+            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
+          </div>
+        </li>
+        <li class="elements__card">
+          <img src="./images/Ilbrus.jpg" alt="Эльбрус" class="elements__image" />
+          <div class="elements__footer">
+            <h2 class="elements__title">Гора Эльбрус</h2>
+            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
+          </div>
+        </li>
+        <li class="elements__card">
+          <img src="./images/Dombay.jpg" alt="Домбай" class="elements__image" />
+          <div class="elements__footer">
+            <h2 class="elements__title">Домбай</h2>
+            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
+          </div>
+        </li>
+        <li class="elements__card">
+          <img src="./images/Karachaevsk.jpg" alt="Карачаево-Черкессия" class="elements__image" />
+          <div class="elements__footer">
+            <h2 class="elements__title">Карачаево-Черкессия</h2>
+            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+  <footer class="footer">
+    <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
+  </footer>
+
+  <div id="popup-edit" class="popup">
+    <div class="popup__container">
+      <h2 class="popup__title">Редактировать профиль</h2>
+      <form name="edit-form popup__input_name_name" id="edit-form">
+        <input class="popup__input" name="name" id="name" type="text" value="" placeholder="Имя" />
+        <input class="popup__input popup__input_job_name" name="job" id="job" type="text" value=""
+          placeholder="Работа" />
+        <button aria-label="Сохранить изменения" class="popup__submit" type="submit">Сохранить</button>
+      </form>
+      <button aria-label="Закрыть" id="popup-button-close" class="popup__close" type="button"></button>
+    </div>
+  </div>
+
+  <script src="./scripts/index.js"></script>
+</body>
+
+</html>

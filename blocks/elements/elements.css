@@ -1,0 +1,12 @@
+.elements {
+  padding-top: 48px;
+  max-width: 880px;
+}
+
+@media (max-width: 617px) {
+  .elements {
+    padding-top: 37px;
+    max-width: 282px;
+    margin: 0 auto;
+  }
+}
