@@ -1,0 +1,15 @@
+.zoom__title {
+    margin: 0;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    padding-top: 10px;
+    color: #FFFFFF;
+}
+
+
+@media (max-width: 617px) {
+    .zoom__title {
+        padding-top: 8px;
+    }
+}

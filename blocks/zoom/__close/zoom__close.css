@@ -1,0 +1,27 @@
+.zoom__close {
+    position: absolute;
+    top: -39px;
+    right: -39px;
+    border: none;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: none;
+    background-image: url(../../../images/popup-close.svg);
+    background-size: contain;
+    cursor: pointer;
+}
+
+.zoom__close:hover {
+    opacity: 0.6;
+}
+
+@media (max-width: 617px) {
+    .zoom__close {
+        background-image: url(../../../images/popup-close-small.svg);
+        top: -36px;
+        right: 0;
+        width: 20px;
+        height: 20px;
+    }
+}

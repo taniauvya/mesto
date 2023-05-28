@@ -24,52 +24,10 @@
         <p id="profile-job" class="profile__job">Исследователь океана</p>
       </div>
 
-      <button aria-label="Загрузить изображение" class="profile__button-add" type="button"></button>
+      <button aria-label="Загрузить изображение" id="place-button-add" class="profile__button-add" type="button"></button>
     </section>
     <section class="elements">
       <ul class="elements__list">
-        <li class="elements__card">
-          <img src="./images/Karachaevsk.jpg" alt="Карачаевск" class="elements__image" />
-          <div class="elements__footer">
-            <h2 class="elements__title">Карачаевск</h2>
-            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
-          </div>
-        </li>
-        <li class="elements__card">
-          <img src="./images/Ilbrus.jpg" alt="Эльбрус" class="elements__image" />
-          <div class="elements__footer">
-            <h2 class="elements__title">Гора Эльбрус</h2>
-            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
-          </div>
-        </li>
-        <li class="elements__card">
-          <img src="./images/Dombay.jpg" alt="Домбай" class="elements__image" />
-          <div class="elements__footer">
-            <h2 class="elements__title">Домбай</h2>
-            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
-          </div>
-        </li>
-        <li class="elements__card">
-          <img src="./images/Ilbrus.jpg" alt="Эльбрус" class="elements__image" />
-          <div class="elements__footer">
-            <h2 class="elements__title">Гора Эльбрус</h2>
-            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
-          </div>
-        </li>
-        <li class="elements__card">
-          <img src="./images/Dombay.jpg" alt="Домбай" class="elements__image" />
-          <div class="elements__footer">
-            <h2 class="elements__title">Домбай</h2>
-            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
-          </div>
-        </li>
-        <li class="elements__card">
-          <img src="./images/Karachaevsk.jpg" alt="Карачаево-Черкессия" class="elements__image" />
-          <div class="elements__footer">
-            <h2 class="elements__title">Карачаево-Черкессия</h2>
-            <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
-          </div>
-        </li>
       </ul>
     </section>
   </main>
@@ -81,14 +39,46 @@
     <div class="popup__container">
       <h2 class="popup__title">Редактировать профиль</h2>
       <form name="edit-form popup__input_name_name" id="edit-form">
-        <input class="popup__input" name="name" id="name" type="text" value="" placeholder="Имя" />
-        <input class="popup__input popup__input_job_name" name="job" id="job" type="text" value=""
-          placeholder="Работа" />
+        <input class="popup__input popup__input_type_name" name="name" id="name" type="text" value="" placeholder="Имя" />
+        <input class="popup__input popup__input_type_job" name="job" id="job" type="text" value="" placeholder="Работа" />
         <button aria-label="Сохранить изменения" class="popup__submit" type="submit">Сохранить</button>
       </form>
       <button aria-label="Закрыть" id="popup-button-close" class="popup__close" type="button"></button>
     </div>
   </div>
+
+  <div id="popup-add" class="popup">
+    <div class="popup__container">
+      <h2 class="popup__title">Новое место</h2>
+      <form name="add-form" id="add-form">
+        <input class="popup__input popup__input_place_name" name="place-name" id="place-name" type="text" value="" placeholder="Название" />
+        <input class="popup__input popup__input_place_link" name="place-link" id="place-link" type="text" value="" placeholder="Ссылка на картинку" />
+        <button aria-label="Добавить картинку" class="popup__submit" type="submit">Создать</button>
+      </form>
+      <button aria-label="Закрыть" id="popup-add-button-close" class="popup__close" type="button"></button>
+    </div>
+  </div>
+
+  <div id="zoom" class="zoom">
+    <div class="zoom__container">
+      <img src="" alt="" class="zoom__image" />
+      <h2 class="zoom__title"></h2>
+      <button aria-label="Закрыть" id="zoom-button-close" class="zoom__close" type="button"></button>
+    </div>
+  </div>
+
+
+
+  <template id="card">
+    <li class="elements__card">
+      <button type="button" class="elements__delete" aria-label="Удалить"></button>
+      <img src="" alt="" class="elements__image" />
+      <div class="elements__footer">
+        <h2 class="elements__title"></h2>
+        <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
+      </div>
+    </li>
+  </template> 
 
   <script src="./scripts/index.js"></script>
 </body>

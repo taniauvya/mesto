@@ -9,9 +9,9 @@
     padding: 0;
 }
 
-.elements__like:focus {
+/* .elements__like:focus {
     background-image: url(../../../images/like-active.svg);
-}
+} */
 
 .elements__like:hover {
     background-image: url(../../../images/like-hover.svg);
