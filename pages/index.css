@@ -38,11 +38,10 @@
 @import url(../blocks/popup/__submit/popup__submit.css);
 @import url(../blocks/popup/__close/popup__close.css);
 @import url(../blocks/popup/__title/popup__title.css);
+@import url(../blocks/popup/_edit/popup_edit.css);
 
-
-@import url(../blocks/zoom/zoom.css);
-@import url(../blocks/zoom/_opened/zoom_opened.css);
-@import url(../blocks/zoom/__container/zoom__container.css);
-@import url(../blocks/zoom/__title/zoom__title.css);
-@import url(../blocks/zoom/__close/zoom__close.css);
-@import url(../blocks/zoom/__image/zoom__image.css);
+/* zoom */
+@import url(../blocks/popup/__container-zoom/popup__container-zoom.css);
+@import url(../blocks/popup/__image-zoom/popup__image-zoom.css);
+@import url(../blocks/popup/__title-zoom/popup__title-zoom.css);
+@import url(../blocks/popup/_zoom/popup_zoom.css);
