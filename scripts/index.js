@@ -105,7 +105,7 @@ function createCard(link, name) {
     zoomImage.src = imgEl.src;
     zoomImage.alt = imgEl.alt;
     zoomTitle.textContent = imgEl.alt;
-    popupImageZoom.classList.add('popup_opened');
+    openPopup(popupImageZoom);
   });
   
   const likeEl = cardElement.querySelector('.elements__like');
