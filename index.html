@@ -18,51 +18,73 @@
       <div class="profile__info">
         <div class="profile__name-edit">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
-          <button aria-label="Редактировать профиль" class="profile__button-edit"
-            type="button"></button>
+          <button aria-label="Редактировать профиль" class="profile__button-edit" type="button"></button>
         </div>
         <p class="profile__job">Исследователь океана</p>
       </div>
 
-      <button aria-label="Загрузить изображение" id="place-button-add" class="profile__button-add" type="button"></button>
+      <button aria-label="Загрузить изображение" id="place-button-add" class="profile__button-add"
+        type="button"></button>
     </section>
     <section class="elements">
       <ul class="elements__list">
       </ul>
     </section>
   </main>
-  
+
   <footer class="footer">
     <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
   </footer>
 
-  <div class="popup popup_edit edit-popup">
+  <div class="popup popup_edit edit-popup" tabindex="0">
     <div class="popup__container">
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form name="edit-form">
-        <input class="popup__input popup__input_type_name" name="name" id="name" type="text" value="" placeholder="Имя" />
-        <input class="popup__input popup__input_type_job" name="job" id="job" type="text" value="" placeholder="Работа" />
-        <button aria-label="Сохранить изменения" class="popup__submit" type="submit">Сохранить</button>
+      <form name="edit-form" class="popup__form" novalidate>
+        <div class="popup__input-container">
+          <input class="popup__input popup__input_type_name" name="name" id="name-input" type="text" value=""
+            placeholder="Имя" minlength="2" maxlength="40" required />
+          <div class="popup__input-error-padding"></div>
+          <span class="popup__form-input-error name-input-error"></span>
+        </div>
+        <div class="popup__input-container">
+          <input class="popup__input popup__input_type_job" name="job" id="job-input" type="text" value=""
+            placeholder="О себе" minlength="2" maxlength="200" required />
+          <div class="popup__input-error-padding"></div>
+          <span class="popup__form-input-error job-input-error"></span>
+        </div>
+        <button aria-label="Сохранить изменения" class="popup__submit popup__button" type="submit"
+          disabled>Сохранить</button>
       </form>
       <button aria-label="Закрыть" id="popup-button-close" class="popup__close" type="button"></button>
     </div>
   </div>
 
-  <div class="popup popup_edit add-popup">
+  <div class="popup popup_edit add-popup" tabindex="0">
     <div class="popup__container">
       <h2 class="popup__title">Новое место</h2>
-      <form name="add-form">
-        <input class="popup__input popup__input_place_name" name="place-name" type="text" value="" placeholder="Название" />
-        <input class="popup__input popup__input_place_link" name="place-link" type="text" value="" placeholder="Ссылка на картинку" />
-        <button aria-label="Добавить картинку" class="popup__submit" type="submit">Создать</button>
+      <form name="add-form" class="popup__form" novalidate>
+        <div class="popup__input-container">
+          <input class="popup__input popup__input_place_name" name="place-name" type="text" id="place-name-input"
+            value="" placeholder="Название" minlength="2" maxlength="30" required />
+          <div class="popup__input-error-padding"></div>
+          <span class="popup__form-input-error place-name-input-error"></span>
+        </div>
+        <div class="popup__input-container">
+          <input class="popup__input popup__input_place_link" name="place-link" type="url" id="place-link-input"
+            value="" placeholder="Ссылка на картинку" required />
+          <div class="popup__input-error-padding"></div>
+          <span class="popup__form-input-error place-link-input-error"></span>
+        </div>
+        <button aria-label="Добавить картинку" class="popup__submit popup__button" type="submit">Создать</button>
       </form>
       <button aria-label="Закрыть" id="popup-add-button-close" class="popup__close" type="button"></button>
     </div>
   </div>
 
-  <div class="popup popup_zoom zoom-popup">
+  <div class="popup popup_zoom zoom-popup" tabindex="0">
     <div class="popup__container-zoom">
-      <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="Архыз" class="popup__image-zoom" />
+      <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="Архыз"
+        class="popup__image-zoom" />
       <h2 class="popup__title-zoom"></h2>
       <button aria-label="Закрыть" class="popup__close" type="button"></button>
     </div>
@@ -73,14 +95,16 @@
   <template id="card">
     <li class="elements__card">
       <button type="button" class="elements__delete" aria-label="Удалить"></button>
-      <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="Архыз" class="elements__image" />
+      <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="Архыз"
+        class="elements__image" />
       <div class="elements__footer">
         <h2 class="elements__title"></h2>
         <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
       </div>
     </li>
-  </template> 
+  </template>
 
+  <script src="./scripts/validate.js"></script>
   <script src="./scripts/index.js"></script>
 </body>
 

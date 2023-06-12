@@ -29,14 +29,27 @@ const initialCards = [
 //////////////////
 // Общие функции
 
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
+function closePopupOnEscape(evt) {
+  if (evt.key === "Escape") {
+    closePopup(evt.currentTarget);
+  }
 }
- 
+
+function openPopup(popup) {
+  resetErr(popup, validationConfig);
+  //Слушатель событий, закрывающий модальное окно по нажатию на Esc , добавляется при открытии модального
+  //окна и удаляется при его закрытии.
+  popup.addEventListener('keydown', closePopupOnEscape);
+  popup.classList.add('popup_opened');
+  popup.focus();
+}
+
 
 function closePopup(popup) {
+  popup.removeEventListener('keydown', closePopupOnEscape);
   popup.classList.remove('popup_opened');
 }
+
 
 
 //////////////////
@@ -64,10 +77,11 @@ const profileButtonEdit = document.querySelector('.profile__button-edit');
 const profilePopup = document.querySelector('.edit-popup');
 
 // Обработчик клика на кнопку
-profileButtonEdit.addEventListener('click', evt => {
-    openPopup(profilePopup);
-    profileNameInput.value = profileName.textContent;
-    profileJobInput.value = profileJob.textContent;
+profileButtonEdit.addEventListener('click', () => {
+  profileNameInput.value = profileName.textContent;
+  profileJobInput.value = profileJob.textContent;
+  openPopup(profilePopup);
+
 });
 
 profileForm.addEventListener('submit', evt => {
@@ -107,7 +121,7 @@ function createCard(link, name) {
     zoomTitle.textContent = imgEl.alt;
     openPopup(popupImageZoom);
   });
-  
+
   const likeEl = cardElement.querySelector('.elements__like');
   likeEl.addEventListener('click', (evt) => {
     likeEl.classList.toggle('elements__like_checked');
@@ -129,9 +143,9 @@ function addImage(link, name, isInitial) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    initialCards.forEach(e => {
-      addImage(e.link, e.name, true);
-    });
+  initialCards.forEach(e => {
+    addImage(e.link, e.name, true);
+  });
 });
 
 
@@ -150,12 +164,12 @@ const popupImageAdd = document.querySelector('.add-popup');
 
 // Обработчик клика на кнопку
 imageAddButton.addEventListener('click', evt => {
-    openPopup(popupImageAdd);
+  openPopup(popupImageAdd);
 });
 
 imageAddForm.addEventListener('submit', evt => {
   evt.preventDefault();
-    
+
   addImage(imageAddLinkInput.value, imageAddNameInput.value, false);
 
   evt.target.reset();
@@ -177,4 +191,19 @@ closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
   // устанавливаем обработчик закрытия на крестик
   button.addEventListener('click', () => closePopup(popup));
+});
+
+
+////////////////////////////////
+// Закрытие popup по нажатию на оверлей
+
+const popups = document.querySelectorAll('.popup');
+
+// с окончанием `s` нужно обязательно, так как много кнопок
+popups.forEach(popup => {
+  popup.addEventListener('click', evt => {
+    if (evt.target.classList.contains('popup')) {
+      closePopup(popup);
+    }
+  });
 });

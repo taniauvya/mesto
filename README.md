@@ -16,5 +16,5 @@ Mesto это учебный проект в рамках курса [**Веб-р
 * Любой современный веб браузер - например [Google Chrome](https://www.google.com/intl/ru_ru/chrome/ "Google Chrome") или [Firefox](https://www.mozilla.org/ru/firefox/new/ "Firefox")
 
 Планы по доработке: 
-* Реализовать функционал загрузки новых изображений
+* Реализовать сохранение изображений при перезагрузке страницы
 

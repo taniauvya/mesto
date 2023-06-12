@@ -1,0 +1,4 @@
+.popup__input-error-padding {
+    max-height: 5px;
+    flex-grow: 1;
+}
