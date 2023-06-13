@@ -1,57 +1,3 @@
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-
-//////////////////
-// Общие функции
-
-function closePopupOnEscape(evt) {
-  if (evt.key === "Escape") {
-    closePopup(evt.currentTarget);
-  }
-}
-
-function openPopup(popup) {
-  resetErr(popup, validationConfig);
-  //Слушатель событий, закрывающий модальное окно по нажатию на Esc , добавляется при открытии модального
-  //окна и удаляется при его закрытии.
-  popup.addEventListener('keydown', closePopupOnEscape);
-  popup.classList.add('popup_opened');
-  popup.focus();
-}
-
-
-function closePopup(popup) {
-  popup.removeEventListener('keydown', closePopupOnEscape);
-  popup.classList.remove('popup_opened');
-}
-
-
-
 //////////////////
 // Popup zoom
 
@@ -60,28 +6,112 @@ const zoomImage = popupImageZoom.querySelector('.popup__image-zoom');
 const zoomTitle = popupImageZoom.querySelector('.popup__title-zoom');
 
 
+///////////////////////////
+// Popup профиля
+
+const profileForm = document.forms['edit-form'];
+const profileNameInput = profileForm.querySelector('.popup__input_type_name');
+const profileJobInput = profileForm.querySelector('.popup__input_type_job');
+const profileName = document.querySelector('.profile__name');
+const profileJob = document.querySelector('.profile__job');
+const profileButtonEdit = document.querySelector('.profile__button-edit');
+const profilePopup = document.querySelector('.edit-popup');
+
+///////////////////////////
+// Карточки
+
+const cardsElement = document.querySelector('.elements__list');
+const cardTemplate = document.querySelector('#card').content;
+
+
+///////////////////////////
+// Popup добавления карточки
+
+const imageAddForm = document.forms['add-form'];
+const imageAddNameInput = imageAddForm.querySelector('.popup__input_place_name');
+const imageAddLinkInput = imageAddForm.querySelector('.popup__input_place_link');
+const imageAddButton = document.querySelector('#place-button-add');
+const popupImageAdd = document.querySelector('.add-popup');
+
+////////////////////////////////////////
+
+
+//////////////////
+// Общие функции
+
+/** Обработчик keydown в попапах - закрывает попап при нажатии Escape */
+function handlePopupKeydown(evt) {
+  if (evt.key === "Escape") {
+    closePopup(evt.currentTarget);
+  }
+}
+
+/** Общая функция открытия попапа */
+function openPopup(popup) {
+  //Слушатель событий, закрывающий модальное окно по нажатию на Esc , добавляется при открытии модального
+  //окна и удаляется при его закрытии.
+  popup.addEventListener('keydown', handlePopupKeydown);
+  popup.classList.add('popup_opened');
+  popup.focus();
+}
+
+/** Общая функция закрытия попапа */
+function closePopup(popup) {
+  popup.removeEventListener('keydown', handlePopupKeydown);
+  popup.classList.remove('popup_opened');
+}
+
+
+/** Создание новой карточки */
+function createCard(cardData) {
+  const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
+  const imgEl = cardElement.querySelector('.card__image');
+  imgEl.src = cardData.link;
+  imgEl.alt = cardData.name;
+  cardElement.querySelector('.card__title').textContent = cardData.name;
+
+  const cardDeleteButton = cardElement.querySelector('.card__delete');
+  cardDeleteButton.addEventListener('click', (evt) => {
+    const listItem = cardDeleteButton.closest('.card');
+    listItem.remove();
+  });
+
+  imgEl.addEventListener('click', (evt) => {
+    zoomImage.src = imgEl.src;
+    zoomImage.alt = imgEl.alt;
+    zoomTitle.textContent = imgEl.alt;
+    openPopup(popupImageZoom);
+  });
+
+  const likeEl = cardElement.querySelector('.card__like');
+  likeEl.addEventListener('click', (evt) => {
+    likeEl.classList.toggle('card__like_checked');
+  });
+
+  return cardElement;
+}
+
+/** Добавление карточки в DOM */
+function addImage(cardData, isAppend) {
+  const cardElement = createCard(cardData);
+
+  if (isAppend) {
+    cardsElement.append(cardElement);
+  }
+  else {
+    cardsElement.prepend(cardElement);
+  }
+}
+
 
 ///////////////////////////
 // Popup профиля
 
-// Находим форму в DOM
-const profileForm = document.forms['edit-form'];
-// Находим поля формы в DOM
-const profileNameInput = profileForm.querySelector('.popup__input_type_name');
-const profileJobInput = profileForm.querySelector('.popup__input_type_job');
-
-const profileName = document.querySelector('.profile__name');
-const profileJob = document.querySelector('.profile__job');
-
-const profileButtonEdit = document.querySelector('.profile__button-edit');
-const profilePopup = document.querySelector('.edit-popup');
-
-// Обработчик клика на кнопку
 profileButtonEdit.addEventListener('click', () => {
   profileNameInput.value = profileName.textContent;
   profileJobInput.value = profileJob.textContent;
+  resetErr(profilePopup, validationConfig);
   openPopup(profilePopup);
-
 });
 
 profileForm.addEventListener('submit', evt => {
@@ -98,53 +128,9 @@ profileForm.addEventListener('submit', evt => {
 //////////////////////////
 // Начальная загрузка загрузка карточек
 
-const cardsElement = document.querySelector('.elements__list');
-const cardTemplate = document.querySelector('#card').content;
-
-
-function createCard(link, name) {
-  const cardElement = cardTemplate.querySelector('.elements__card').cloneNode(true);
-  const imgEl = cardElement.querySelector('.elements__image');
-  imgEl.src = link;
-  imgEl.alt = name;
-  cardElement.querySelector('.elements__title').textContent = name;
-
-  const cardDeleteButton = cardElement.querySelector('.elements__delete');
-  cardDeleteButton.addEventListener('click', (evt) => {
-    const listItem = cardDeleteButton.closest('.elements__card');
-    listItem.remove();
-  });
-
-  imgEl.addEventListener('click', (evt) => {
-    zoomImage.src = imgEl.src;
-    zoomImage.alt = imgEl.alt;
-    zoomTitle.textContent = imgEl.alt;
-    openPopup(popupImageZoom);
-  });
-
-  const likeEl = cardElement.querySelector('.elements__like');
-  likeEl.addEventListener('click', (evt) => {
-    likeEl.classList.toggle('elements__like_checked');
-  });
-
-  return cardElement
-}
-
-
-function addImage(link, name, isInitial) {
-  const cardElement = createCard(link, name);
-
-  if (isInitial) {
-    cardsElement.append(cardElement);
-  }
-  else {
-    cardsElement.prepend(cardElement);
-  }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   initialCards.forEach(e => {
-    addImage(e.link, e.name, true);
+    addImage({"link": e.link, "name": e.name}, true);
   });
 });
 
@@ -153,24 +139,15 @@ document.addEventListener('DOMContentLoaded', () => {
 ///////////////////////////
 // Popup добавления карточки
 
-// Находим форму в DOM
-const imageAddForm = document.forms['add-form'];
-// Находим поля формы в DOM
-const imageAddNameInput = imageAddForm.querySelector('.popup__input_place_name');
-const imageAddLinkInput = imageAddForm.querySelector('.popup__input_place_link');
-
-const imageAddButton = document.querySelector('#place-button-add');
-const popupImageAdd = document.querySelector('.add-popup');
-
-// Обработчик клика на кнопку
 imageAddButton.addEventListener('click', evt => {
+  resetErr(popupImageAdd, validationConfig);
   openPopup(popupImageAdd);
 });
 
 imageAddForm.addEventListener('submit', evt => {
   evt.preventDefault();
 
-  addImage(imageAddLinkInput.value, imageAddNameInput.value, false);
+  addImage({"link": imageAddLinkInput.value, "name": imageAddNameInput.value}, false);
 
   evt.target.reset();
 

@@ -7,6 +7,8 @@ const validationConfig = {
     errorClass: 'popup__error_visible'
 };
 
+
+/** Отображение текста ошибки валидации */
 function showInputError(formElement, inputElement, errorMessage, validationConfig) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(validationConfig.inputErrorClass);
@@ -14,6 +16,8 @@ function showInputError(formElement, inputElement, errorMessage, validationConfi
     errorElement.classList.add(validationConfig.errorClass);
 };
 
+
+/** Скрытие текста ошибки валидации */
 function hideInputError(formElement, inputElement, validationConfig) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.remove(validationConfig.inputErrorClass);
@@ -21,6 +25,7 @@ function hideInputError(formElement, inputElement, validationConfig) {
     errorElement.textContent = '';
 };
 
+/** Отображение текста результата валидации - скрытие или отображение ошибки */
 function checkInputValidity(formElement, inputElement, validationConfig) {
     if (!inputElement.validity.valid) {
         showInputError(formElement, inputElement, inputElement.validationMessage, validationConfig);
@@ -29,12 +34,14 @@ function checkInputValidity(formElement, inputElement, validationConfig) {
     }
 };
 
+/** Проверка валидности формы */
 function hasInvalidInput(inputList) {
     return inputList.some((inputElement) => {
         return !inputElement.validity.valid;
     });
 };
 
+/** Переключение активности кнопки сабмита */
 function toggleButtonState(inputList, buttonElement, validationConfig) {
     if (hasInvalidInput(inputList)) {
         buttonElement.classList.add(validationConfig.inactiveButtonClass);
@@ -46,6 +53,8 @@ function toggleButtonState(inputList, buttonElement, validationConfig) {
     }
 };
 
+
+/** Установка обработчиков валидации */
 function setEventListeners(formElement, validationConfig) {
     const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
     const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
@@ -59,6 +68,7 @@ function setEventListeners(formElement, validationConfig) {
 };
 
 
+/** Включение валидации на формах */
 function enableValidation(validationConfig) {
     const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
     formList.forEach((formElement) => {
@@ -70,10 +80,9 @@ function enableValidation(validationConfig) {
     });
 }
 
+/** Сброс ошибки когда форма пустая или когда форма заполняется перед открытием */
 function resetErr(popup, validationConfig) {
     const formElement = popup.querySelector(validationConfig.formSelector);
-    // для zoom
-    if (!formElement) return;
 
     const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
 

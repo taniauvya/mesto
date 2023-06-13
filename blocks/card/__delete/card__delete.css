@@ -1,12 +1,10 @@
-.elements__delete {
+.card__delete {
     background-image:
         url(../../../images/elements-delete1.svg),
         url(../../../images/elements-delete2.svg);
     background-position: top center, top 6.3px center;
-    /* background-position: 50%; */
     background-color: transparent;
     background-repeat: no-repeat;
-    /* background-size: 100%; */
     border: none;
     height: 19px;
     position: absolute;
@@ -16,7 +14,7 @@
     cursor: pointer;
 }
 
-.elements__delete:hover {
+.card__delete:hover {
     background-image:
         url(../../../images/elements-delete-hover1.svg),
         url(../../../images/elements-delete-hover2.svg);

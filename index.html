@@ -36,7 +36,7 @@
     <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
   </footer>
 
-  <div class="popup popup_edit edit-popup" tabindex="0">
+  <div class="popup popup_type_edit edit-popup" tabindex="0">
     <div class="popup__container">
       <h2 class="popup__title">Редактировать профиль</h2>
       <form name="edit-form" class="popup__form" novalidate>
@@ -59,7 +59,7 @@
     </div>
   </div>
 
-  <div class="popup popup_edit add-popup" tabindex="0">
+  <div class="popup popup_type_edit add-popup" tabindex="0">
     <div class="popup__container">
       <h2 class="popup__title">Новое место</h2>
       <form name="add-form" class="popup__form" novalidate>
@@ -81,7 +81,7 @@
     </div>
   </div>
 
-  <div class="popup popup_zoom zoom-popup" tabindex="0">
+  <div class="popup popup_type_zoom zoom-popup" tabindex="0">
     <div class="popup__container-zoom">
       <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="Архыз"
         class="popup__image-zoom" />
@@ -93,17 +93,18 @@
 
 
   <template id="card">
-    <li class="elements__card">
-      <button type="button" class="elements__delete" aria-label="Удалить"></button>
+    <li class="card">
+      <button type="button" class="card__delete" aria-label="Удалить"></button>
       <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="Архыз"
-        class="elements__image" />
-      <div class="elements__footer">
-        <h2 class="elements__title"></h2>
-        <button aria-label="Отметить понравившимся" class="elements__like" type="button"></button>
+        class="card__image" />
+      <div class="card__footer">
+        <h2 class="card__title"></h2>
+        <button aria-label="Отметить понравившимся" class="card__like" type="button"></button>
       </div>
     </li>
   </template>
 
+  <script src="./scripts/cards.js"></script>
   <script src="./scripts/validate.js"></script>
   <script src="./scripts/index.js"></script>
 </body>
