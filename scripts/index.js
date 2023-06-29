@@ -1,10 +1,48 @@
-//////////////////
-// Popup zoom
+import { Card } from './Card.js';
+import { FormValidator } from './FormValidator.js';
 
-const popupImageZoom = document.querySelector('.zoom-popup');
-const zoomImage = popupImageZoom.querySelector('.popup__image-zoom');
-const zoomTitle = popupImageZoom.querySelector('.popup__title-zoom');
 
+///////////////////////////
+// Параметры валидации
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
+
+///////////////////////////
+// Начальные карточки
+
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
 
 ///////////////////////////
 // Popup профиля
@@ -21,7 +59,6 @@ const profilePopup = document.querySelector('.edit-popup');
 // Карточки
 
 const cardsElement = document.querySelector('.elements__list');
-const cardTemplate = document.querySelector('#card').content;
 
 
 ///////////////////////////
@@ -61,39 +98,13 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
 }
 
+/////////////////////////////////////
 
-/** Создание новой карточки */
-function createCard(cardData) {
-  const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-  const imgEl = cardElement.querySelector('.card__image');
-  imgEl.src = cardData.link;
-  imgEl.alt = cardData.name;
-  cardElement.querySelector('.card__title').textContent = cardData.name;
-
-  const cardDeleteButton = cardElement.querySelector('.card__delete');
-  cardDeleteButton.addEventListener('click', (evt) => {
-    const listItem = cardDeleteButton.closest('.card');
-    listItem.remove();
-  });
-
-  imgEl.addEventListener('click', (evt) => {
-    zoomImage.src = imgEl.src;
-    zoomImage.alt = imgEl.alt;
-    zoomTitle.textContent = imgEl.alt;
-    openPopup(popupImageZoom);
-  });
-
-  const likeEl = cardElement.querySelector('.card__like');
-  likeEl.addEventListener('click', (evt) => {
-    likeEl.classList.toggle('card__like_checked');
-  });
-
-  return cardElement;
-}
 
 /** Добавление карточки в DOM */
 function addImage(cardData, isAppend) {
-  const cardElement = createCard(cardData);
+  const card = new Card(cardData, '#card');
+  const cardElement = card.generateCard();
 
   if (isAppend) {
     cardsElement.append(cardElement);
@@ -104,13 +115,23 @@ function addImage(cardData, isAppend) {
 }
 
 
+/** Включение валидации на всех формах */
+function enableValidation(validationConfig) {
+  const forms = Array.from(document.querySelectorAll(validationConfig.formSelector));
+  forms.forEach(formElement => {
+    const formValidator = new FormValidator(validationConfig, formElement);
+    formValidator.enableValidation();
+  });
+}
+
+
 ///////////////////////////
 // Popup профиля
 
 profileButtonEdit.addEventListener('click', () => {
   profileNameInput.value = profileName.textContent;
   profileJobInput.value = profileJob.textContent;
-  resetErr(profilePopup, validationConfig);
+  new FormValidator(validationConfig, profileForm).resetErr();
   openPopup(profilePopup);
 });
 
@@ -130,7 +151,7 @@ profileForm.addEventListener('submit', evt => {
 
 document.addEventListener('DOMContentLoaded', () => {
   initialCards.forEach(e => {
-    addImage({"link": e.link, "name": e.name}, true);
+    addImage({ "link": e.link, "name": e.name }, true);
   });
 });
 
@@ -140,14 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
 // Popup добавления карточки
 
 imageAddButton.addEventListener('click', evt => {
-  resetErr(popupImageAdd, validationConfig);
+  new FormValidator(validationConfig, imageAddForm).resetErr();
   openPopup(popupImageAdd);
 });
 
 imageAddForm.addEventListener('submit', evt => {
   evt.preventDefault();
 
-  addImage({"link": imageAddLinkInput.value, "name": imageAddNameInput.value}, false);
+  addImage({ "link": imageAddLinkInput.value, "name": imageAddNameInput.value }, false);
 
   evt.target.reset();
 
@@ -184,3 +205,11 @@ popups.forEach(popup => {
     }
   });
 });
+
+
+////////////////////////////////
+// Включение валидации на формах
+
+enableValidation(validationConfig);
+
+export { openPopup };
