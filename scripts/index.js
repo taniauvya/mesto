@@ -100,11 +100,17 @@ function closePopup(popup) {
 
 /////////////////////////////////////
 
+/** Создание карточки */
+function createCard(cardData) {
+  const card = new Card(cardData, '#card');
+  return card.generateCard();
+}
+
 
 /** Добавление карточки в DOM */
 function addImage(cardData, isAppend) {
-  const card = new Card(cardData, '#card');
-  const cardElement = card.generateCard();
+  
+  const cardElement = createCard(cardData);
 
   if (isAppend) {
     cardsElement.append(cardElement);
@@ -114,24 +120,13 @@ function addImage(cardData, isAppend) {
   }
 }
 
-
-/** Включение валидации на всех формах */
-function enableValidation(validationConfig) {
-  const forms = Array.from(document.querySelectorAll(validationConfig.formSelector));
-  forms.forEach(formElement => {
-    const formValidator = new FormValidator(validationConfig, formElement);
-    formValidator.enableValidation();
-  });
-}
-
-
 ///////////////////////////
 // Popup профиля
 
 profileButtonEdit.addEventListener('click', () => {
   profileNameInput.value = profileName.textContent;
   profileJobInput.value = profileJob.textContent;
-  new FormValidator(validationConfig, profileForm).resetErr();
+  profileFormValidator.resetErr();
   openPopup(profilePopup);
 });
 
@@ -161,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Popup добавления карточки
 
 imageAddButton.addEventListener('click', evt => {
-  new FormValidator(validationConfig, imageAddForm).resetErr();
+  imageAddFormValidator.resetErr();
   openPopup(popupImageAdd);
 });
 
@@ -210,6 +205,10 @@ popups.forEach(popup => {
 ////////////////////////////////
 // Включение валидации на формах
 
-enableValidation(validationConfig);
+const profileFormValidator = new FormValidator(validationConfig, profileForm);
+profileFormValidator.enableValidation();
+
+const imageAddFormValidator = new FormValidator(validationConfig, imageAddForm);
+imageAddFormValidator.enableValidation();
 
 export { openPopup };

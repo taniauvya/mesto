@@ -31,64 +31,57 @@ class FormValidator {
     };
 
     /** Проверка валидности формы */
-    _hasInvalidInput(inputs) {
-        return inputs.some(inputElement => {
+    _hasInvalidInput() {
+        return this._inputs.some(inputElement => {
             return !inputElement.validity.valid;
         });
     };
 
     /** Переключение активности кнопки сабмита */
-    _toggleButtonState(inputs, buttonElement) {
-        if (this._hasInvalidInput(inputs)) {
-            buttonElement.classList.add(this._validationConfig.inactiveButtonClass);
-            buttonElement.disabled = true;
+    _toggleButtonState() {
+        if (this._hasInvalidInput()) {
+            this._buttonElement.classList.add(this._validationConfig.inactiveButtonClass);
+            this._buttonElement.disabled = true;
         }
         else {
-            buttonElement.classList.remove(this._validationConfig.inactiveButtonClass);
-            buttonElement.disabled = false;
+            this._buttonElement.classList.remove(this._validationConfig.inactiveButtonClass);
+            this._buttonElement.disabled = false;
         }
     };
 
     /** Установка обработчиков валидации */
     _setEventListeners() {
-        const inputs = Array.from(this._formElement.querySelectorAll(this._validationConfig.inputSelector));
-        const buttonElement = this._formElement.querySelector(this._validationConfig.submitButtonSelector);
-        this._toggleButtonState(inputs, buttonElement);
-        inputs.forEach(inputElement => {
+        this._toggleButtonState();
+        this._inputs.forEach(inputElement => {
             inputElement.addEventListener('input', () => {
                 this._checkInputValidity(inputElement);
-                this._toggleButtonState(inputs, buttonElement);
+                this._toggleButtonState();
             });
         });
     };
 
     /** Сброс ошибки когда форма пустая или когда форма заполняется перед открытием */
     resetErr() {
-        const inputs = Array.from(this._formElement.querySelectorAll(this._validationConfig.inputSelector));
-
         // Сбрасывает ошибки если все инпуты пустые
-        const allEmpty = inputs.every(inputElement => inputElement.value === '');
+        const allEmpty = this._inputs.every(inputElement => inputElement.value === '');
         if (allEmpty) {
-            inputs.forEach(inputElement => {
+            this._inputs.forEach(inputElement => {
                 this._hideInputError(inputElement);
             });
         }
         else {
-            inputs.forEach(inputElement => {
+            this._inputs.forEach(inputElement => {
                 this._checkInputValidity(inputElement);
             });
         }
 
-        const buttonElement = this._formElement.querySelector(this._validationConfig.submitButtonSelector);
-        this._toggleButtonState(inputs, buttonElement);
+        this._toggleButtonState();
     }
 
     /** Включение валидации на формах */
     enableValidation() {
-        this._formElement.addEventListener('submit', function (evt) {
-            evt.preventDefault();
-        });
-
+        this._inputs = Array.from(this._formElement.querySelectorAll(this._validationConfig.inputSelector));
+        this._buttonElement = this._formElement.querySelector(this._validationConfig.submitButtonSelector);
         this._setEventListeners();
     }
 }
