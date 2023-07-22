@@ -4,17 +4,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./pages/index.css" />
   <title>Mesto</title>
 </head>
 
 <body class="page">
   <header class="header">
-    <img class="header__logo" src="./images/logo.svg" alt="логотип Россия" />
+    <img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="логотип Россия" />
   </header>
   <main class="content">
     <section class="profile">
-      <img src="./images/Avatar.jpg" alt="Аватар Кусто" class="profile__image" />
+      <img src="<%=require('./images/Avatar.jpg')%>" alt="Аватар Кусто" class="profile__image" />
       <div class="profile__info">
         <div class="profile__name-edit">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -47,7 +46,7 @@
           <span class="popup__form-input-error name-input-error"></span>
         </div>
         <div class="popup__input-container">
-          <input class="popup__input popup__input_type_job" name="job" id="job-input" type="text" value=""
+          <input class="popup__input popup__input_type_job" name="info" id="job-input" type="text" value=""
             placeholder="О себе" minlength="2" maxlength="200" required />
           <div class="popup__input-error-padding"></div>
           <span class="popup__form-input-error job-input-error"></span>
@@ -64,13 +63,13 @@
       <h2 class="popup__title">Новое место</h2>
       <form name="add-form" class="popup__form" novalidate>
         <div class="popup__input-container">
-          <input class="popup__input popup__input_place_name" name="place-name" type="text" id="place-name-input"
+          <input class="popup__input popup__input_place_name" name="placeName" type="text" id="place-name-input"
             value="" placeholder="Название" minlength="2" maxlength="30" required />
           <div class="popup__input-error-padding"></div>
           <span class="popup__form-input-error place-name-input-error"></span>
         </div>
         <div class="popup__input-container">
-          <input class="popup__input popup__input_place_link" name="place-link" type="url" id="place-link-input"
+          <input class="popup__input popup__input_place_link" name="placeLink" type="url" id="place-link-input"
             value="" placeholder="Ссылка на картинку" required />
           <div class="popup__input-error-padding"></div>
           <span class="popup__form-input-error place-link-input-error"></span>
@@ -101,8 +100,6 @@
       </div>
     </li>
   </template>
-
-  <script type="module" src="./scripts/index.js"></script>
 
 </body>
 

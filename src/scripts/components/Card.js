@@ -1,19 +1,10 @@
-//////////////////
-// Popup zoom
+export default class Card {
 
-import { openPopup } from './index.js'
-
-const popupImageZoom = document.querySelector('.zoom-popup');
-const zoomImage = popupImageZoom.querySelector('.popup__image-zoom');
-const zoomTitle = popupImageZoom.querySelector('.popup__title-zoom');
-
-
-class Card {
-
-  constructor(data, templateSelector) {
+  constructor({data, handleCardClick}, templateSelector) {
     this._link = data.link;
     this._name = data.name;
     this._templateSelector = templateSelector;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -24,13 +15,6 @@ class Card {
       .cloneNode(true);
 
     return cardElement;
-  }
-
-  _handleImgClick() {
-    zoomImage.src = this._link;
-    zoomImage.alt = this._name;
-    zoomTitle.textContent = this._name;
-    openPopup(popupImageZoom);
   }
 
   _handleLikeClick() {
@@ -52,7 +36,7 @@ class Card {
     });
 
     this._imgElement.addEventListener('click', () => {
-      this._handleImgClick();
+      this._handleCardClick({name: this._name, link: this._link});
     });
     
     this._likeElement.addEventListener('click', () => {
@@ -60,8 +44,7 @@ class Card {
     });
   }
 
-  generateCard() {
-    
+  generateCard() {    
     this._element = this._getTemplate();
     this._imgElement = this._element.querySelector('.card__image');
     this._likeElement = this._element.querySelector('.card__like');
@@ -77,6 +60,3 @@ class Card {
     return this._element;
   }
 }
-
-
-export { Card };
