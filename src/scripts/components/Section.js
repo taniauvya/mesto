@@ -12,16 +12,9 @@ export default class Section {
         else {
             this._container.prepend(element);
         }
-            
     }
 
-    // clear() {
-    //     this._container.innerHTML = '';
-    // }
-
     renderItems() {
-        //this.clear();
-
         this._items.forEach(item => {
             this._renderer(item);
         });

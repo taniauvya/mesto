@@ -60,21 +60,11 @@ export default class FormValidator {
         });
     };
 
-    /** Сброс ошибки когда форма пустая или когда форма заполняется перед открытием */
-    resetErr() {
-        // Сбрасывает ошибки если все инпуты пустые
-        const allEmpty = this._inputs.every(inputElement => inputElement.value === '');
-        if (allEmpty) {
-            this._inputs.forEach(inputElement => {
-                this._hideInputError(inputElement);
-            });
-        }
-        else {
-            this._inputs.forEach(inputElement => {
-                this._checkInputValidity(inputElement);
-            });
-        }
-
+    /** Сброс ошибки */
+    resetValidation() {
+        this._inputs.forEach(inputElement => {
+            this._hideInputError(inputElement);
+        });
         this._toggleButtonState();
     }
 

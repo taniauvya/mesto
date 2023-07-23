@@ -40,8 +40,4 @@ export default class Popup {
         const closeButton = this._popup.querySelector('.popup__close');
         closeButton.addEventListener('click', this.close.bind(this));
     }
-
-    getPopup() {
-        return this._popup;
-    }
 }
