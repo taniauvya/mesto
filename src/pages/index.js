@@ -1,15 +1,16 @@
 import './index.css';
 
+import { api } from '../scripts/components/Api.js';
 import Card from '../scripts/components/Card.js';
 import Section from '../scripts/components/Section.js';
 import FormValidator from '../scripts/components/FormValidator.js';
 import PopupWithForm from '../scripts/components/PopupWithForm.js';
 import UserInfo from '../scripts/components/UserInfo.js';
 import PopupWithImage from '../scripts/components/PopupWithImage.js';
+import PopupWithConfirmation from '../scripts/components/PopupWithConfirmation';
 
 import {
   validationConfig,
-  initialCards,
   cardSelector,
   zoomPopupSelector,
   cardSectionSelector,
@@ -19,7 +20,18 @@ import {
   profileInfoInputSelector,
   imageAddButtonSelector,
   popupImageAddSelector,
+  popupImageDeleteSelector,
+  avatarPopupSelector,
+  avatarImageSelector,
+  avatarEditButtonSelector,
 } from '../scripts/utils/constants.js';
+
+
+// ID пользователя, определяется при начальной загрузке пользователя/карточек
+let selfId;
+
+// Аватар пользователя
+const profileImage = document.querySelector(avatarImageSelector);
 
 
 ///////////////////////////
@@ -36,45 +48,51 @@ function handlerCardClick(cardData) {
   popupImageZoom.open();
 }
 
+function handlerDeleteClick(card) {
+  popupImageDelete.setCard(card);
+  popupImageDelete.open();
+}
+
 /** Создание карточки */
-function createCard(cardData) {
-  const card = new Card({ data: cardData, handleCardClick: handlerCardClick }, cardSelector);
+function createCard(cardData, selfId) {
+  const card = new Card({ data: cardData, selfId, handleCardClick: handlerCardClick, handleDeleteClick: handlerDeleteClick }, cardSelector);
   return card.generateCard();
 }
 
 /** Добавление карточки в DOM */
-function addImage(cardSection, cardData, isAppend) {
-  const cardElement = createCard(cardData);
+function addImage(cardSection, cardData, isAppend, selfId) {
+  const cardElement = createCard(cardData, selfId);
   cardSection.addItem(cardElement, isAppend);
 }
 
 const cardSection = new Section(
   {
-    items: initialCards,
+    items: [],
     renderer: (item) => {
-      addImage(cardSection, item, true);
+      addImage(cardSection, item, true, selfId);
     }
   }
   , cardSectionSelector
 );
 
 
-
-
-
 ///////////////////////////
 // Popup профиля
 
 const profilePopup = new PopupWithForm(({ name, info }) => {
-  userInfo.setUserInfo({ name, info })
-}, userInfoPopupSelector);
+  return api.updateUserData({ name, about: info })
+    .then(userData => {
+      userInfo.setUserInfo({ name: userData.name, info: userData.about })
+    });
+}
+  , 'Сохранение...'
+  , userInfoPopupSelector
+);
 profilePopup.setEventListeners();
 
 const profileButtonEdit = document.querySelector(profileButtonEditSelector);
 
 const userInfo = new UserInfo(profileNameInputSelector, profileInfoInputSelector);
-
-
 
 profileButtonEdit.addEventListener('click', () => {
   const userData = userInfo.getUserInfo();
@@ -84,15 +102,40 @@ profileButtonEdit.addEventListener('click', () => {
 });
 
 
+const avatarPopup = new PopupWithForm(({ avatarLink }) => {
+  return api.updateAvatar(avatarLink)
+    .then(userData => {
+      profileImage.src = userData.avatar;
+    });
+}
+  , 'Сохранение...'
+  , avatarPopupSelector
+);
+avatarPopup.setEventListeners();
+
+const avatarEditButton = document.querySelector(avatarEditButtonSelector);
+avatarEditButton.addEventListener('click', evt => {
+  avatarPopup.setInputValues({ avatarLink: profileImage.src });
+  formValidators[avatarPopup.getForm().getAttribute('name')].resetValidation();
+  avatarPopup.open();
+});
+
 ///////////////////////////
 // Popup добавления карточки
 
 const imageAddButton = document.querySelector(imageAddButtonSelector);
 
-const popupImageAdd = new PopupWithForm(({ placeLink: link, placeName: name }, evt) => {
-  addImage(cardSection, { "link": link, "name": name }, false);
-}
-  , popupImageAddSelector);
+const popupImageAdd = new PopupWithForm(
+  ({ placeLink: link, placeName: name }, evt) => {
+    const cardData = { "link": link, "name": name };
+    return api.addCard(cardData)
+      .then(cardData => {
+        addImage(cardSection, cardData, false, selfId);
+      });
+  }
+  , 'Создание...'
+  , popupImageAddSelector
+);
 popupImageAdd.setEventListeners();
 
 imageAddButton.addEventListener('click', evt => {
@@ -101,12 +144,14 @@ imageAddButton.addEventListener('click', evt => {
 });
 
 
-//////////////////////////
-// Начальная загрузка загрузка карточек
+///////////////////////////
+// Popup удаления карточки
 
-document.addEventListener('DOMContentLoaded', () => {
-  cardSection.renderItems();
-});
+const popupImageDelete = new PopupWithConfirmation(card => {
+  api.deleteCard(card.getId())
+    .then(() => card.delete());
+}, popupImageDeleteSelector);
+popupImageDelete.setEventListeners();
 
 
 ////////////////////////////////
@@ -129,3 +174,26 @@ const enableValidation = (config) => {
 };
 
 enableValidation(validationConfig);
+
+
+
+//////////////////////////
+// Начальная загрузка
+
+const userDataPromise = api.getUserData();
+const initialCardsPromise = api.getInitialCards();
+
+Promise.all([userDataPromise, initialCardsPromise])
+  .then(([userData, initialCardsData]) => {
+
+    selfId = userData._id;
+
+    userInfo.setUserInfo({ name: userData.name, info: userData.about });
+    profileImage.src = userData.avatar;
+
+    initialCardsData.forEach(card => {
+      addImage(cardSection, card, true, selfId);
+    });
+
+  }
+  );
