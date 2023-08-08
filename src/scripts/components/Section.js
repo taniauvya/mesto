@@ -5,6 +5,10 @@ export default class Section {
         this._container = document.querySelector(containerSelector);
     }
 
+    setItems(items) {
+        this._items = items;
+    }
+
     addItem(element, isAppend) {
         if (isAppend) {
             this._container.append(element);

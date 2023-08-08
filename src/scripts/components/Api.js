@@ -1,13 +1,7 @@
-import {
-    token,
-    cohort
-} from '../../scripts/utils/constants.js';
-  
-
 class Api {
-    constructor({baseUrl, headers}) {
-      this.baseUrl = baseUrl;
-      this.headers = headers;
+    constructor({ baseUrl, headers }) {
+        this.baseUrl = baseUrl;
+        this.headers = headers;
     }
 
     _handleResponce(res) {
@@ -27,15 +21,10 @@ class Api {
                 method: method,
                 headers: this.headers,
                 body: bodyStr
-            }
-        )
-        .then(res => this._handleResponce(res))
-        .catch(err => {
-            console.log(err);
-            return Promise.reject(err);
-        });
+            })
+            .then(res => this._handleResponce(res));
     }
-  
+
     getInitialCards() {
         return this._fetch('cards', 'GET', null);
     }
@@ -49,7 +38,7 @@ class Api {
     }
 
     updateLikeCard(cardId, doLike) {
-        return this._fetch(`cards/${cardId}/likes`, doLike ? 'PUT': 'DELETE');
+        return this._fetch(`cards/${cardId}/likes`, doLike ? 'PUT' : 'DELETE');
     }
 
     addCard(cardData) {
@@ -61,14 +50,18 @@ class Api {
     }
 
     updateAvatar(avatarLink) {
-        return this._fetch('users/me/avatar', 'PATCH', {avatar: avatarLink});
+        return this._fetch('users/me/avatar', 'PATCH', { avatar: avatarLink });
     }
 }
+
+
+const token = "bce6d191-3989-4204-b7fe-718a349295c8";
+const cohort = "cohort-72";
 
 export const api = new Api({
     baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}`,
     headers: {
-      authorization: token,
-      'Content-Type': 'application/json'
+        authorization: token,
+        'Content-Type': 'application/json'
     }
-  });
+});

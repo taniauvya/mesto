@@ -44,8 +44,7 @@ popupImageZoom.setEventListeners();
 // Карточки
 
 function handlerCardClick(cardData) {
-  popupImageZoom.setImageData(cardData);
-  popupImageZoom.open();
+  popupImageZoom.open(cardData);
 }
 
 function handlerDeleteClick(card) {
@@ -53,9 +52,28 @@ function handlerDeleteClick(card) {
   popupImageDelete.open();
 }
 
+function handlerLikeClick(cardId, doLike, cardCallbak) {
+  api.updateLikeCard(cardId, doLike)
+    .then(data => {
+      cardCallbak(data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
 /** Создание карточки */
 function createCard(cardData, selfId) {
-  const card = new Card({ data: cardData, selfId, handleCardClick: handlerCardClick, handleDeleteClick: handlerDeleteClick }, cardSelector);
+  const card = new Card(
+    {
+      data: cardData,
+      selfId,
+      handleCardClick: handlerCardClick,
+      handleDeleteClick: handlerDeleteClick,
+      handleLikeClick: handlerLikeClick
+    },
+    cardSelector
+  );
   return card.generateCard();
 }
 
@@ -82,7 +100,11 @@ const cardSection = new Section(
 const profilePopup = new PopupWithForm(({ name, info }) => {
   return api.updateUserData({ name, about: info })
     .then(userData => {
-      userInfo.setUserInfo({ name: userData.name, info: userData.about })
+      userInfo.setUserInfo({ name: userData.name, info: userData.about });
+      profilePopup.close();
+    })
+    .catch(err => {
+      console.log(err);
     });
 }
   , 'Сохранение...'
@@ -106,6 +128,10 @@ const avatarPopup = new PopupWithForm(({ avatarLink }) => {
   return api.updateAvatar(avatarLink)
     .then(userData => {
       profileImage.src = userData.avatar;
+      avatarPopup.close();
+    })
+    .catch(err => {
+      console.log(err);
     });
 }
   , 'Сохранение...'
@@ -115,7 +141,6 @@ avatarPopup.setEventListeners();
 
 const avatarEditButton = document.querySelector(avatarEditButtonSelector);
 avatarEditButton.addEventListener('click', evt => {
-  avatarPopup.setInputValues({ avatarLink: profileImage.src });
   formValidators[avatarPopup.getForm().getAttribute('name')].resetValidation();
   avatarPopup.open();
 });
@@ -131,6 +156,10 @@ const popupImageAdd = new PopupWithForm(
     return api.addCard(cardData)
       .then(cardData => {
         addImage(cardSection, cardData, false, selfId);
+        popupImageAdd.close();
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
   , 'Создание...'
@@ -149,7 +178,13 @@ imageAddButton.addEventListener('click', evt => {
 
 const popupImageDelete = new PopupWithConfirmation(card => {
   api.deleteCard(card.getId())
-    .then(() => card.delete());
+    .then(() => {
+      card.delete();
+      popupImageDelete.close();
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }, popupImageDeleteSelector);
 popupImageDelete.setEventListeners();
 
@@ -191,9 +226,9 @@ Promise.all([userDataPromise, initialCardsPromise])
     userInfo.setUserInfo({ name: userData.name, info: userData.about });
     profileImage.src = userData.avatar;
 
-    initialCardsData.forEach(card => {
-      addImage(cardSection, card, true, selfId);
-    });
-
+    cardSection.setItems(initialCardsData);
+    cardSection.renderItems();
   }
-  );
+  ).catch(err => {
+    console.log(err);
+  });

@@ -1,11 +1,4 @@
 ///////////////////////////
-// Параметры подключения к API
-
-export const token = "bce6d191-3989-4204-b7fe-718a349295c8"
-export const cohort = "cohort-72"
-
-
-///////////////////////////
 // Параметры валидации
 
 export const validationConfig = {

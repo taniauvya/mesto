@@ -4,6 +4,7 @@ export default class PopupWithForm extends Popup {
 
     constructor(submitHandler, submitTextInProgress, popupSelector) {
         super(popupSelector);
+
         this._submitHandler = submitHandler;
         this._form = this._popup.querySelector('.popup__form');
         this._inputList = this._form.querySelectorAll('.popup__input');
@@ -25,18 +26,17 @@ export default class PopupWithForm extends Popup {
         super.setEventListeners();
         this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
-            this._submitButton.textContent = this._submitTextInProgress;
-            const promise = this._submitHandler(this._getInputValues(), evt);
-            promise.then(() => this.close());
+            this._renderLoading();
+            this._submitHandler(this._getInputValues(), evt);
         });
     }
 
     setInputValues(data) {
         this._inputList.forEach((input) => {
-          // тут вставляем в `value` инпута данные из объекта по атрибуту `name` этого инпута
-          input.value = data[input.name];
+            // тут вставляем в `value` инпута данные из объекта по атрибуту `name` этого инпута
+            input.value = data[input.name];
         });
-      }
+    }
 
     getForm() {
         return this._form;
@@ -46,5 +46,9 @@ export default class PopupWithForm extends Popup {
         super.close();
         this._submitButton.textContent = this._submitText;
         this._form.reset();
+    }
+
+    _renderLoading() {
+        this._submitButton.textContent = this._submitTextInProgress;
     }
 }

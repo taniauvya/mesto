@@ -1,6 +1,6 @@
 import Popup from "./Popup.js";
 
-export default class PopupImageDelete extends Popup {
+export default class PopupWithConfirmation extends Popup {
 
     constructor(submitHandler, popupSelector) {
         super(popupSelector);
@@ -17,7 +17,6 @@ export default class PopupImageDelete extends Popup {
         this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
             this._submitHandler(this._card);
-            this.close();
         });
     }
 }

@@ -12,7 +12,9 @@ export default class UserInfo {
     }
 
     setUserInfo({ name, info }) {
-        this._nameElement.textContent = name;
-        this._infoElement.textContent = info;
+        if (name !== undefined && info !== undefined) {
+            this._nameElement.textContent = name;
+            this._infoElement.textContent = info;
+        }
     }
 }

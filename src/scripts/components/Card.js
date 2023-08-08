@@ -1,8 +1,6 @@
-import { api } from './Api.js';
-
 export default class Card {
 
-  constructor({ data, selfId, handleCardClick, handleDeleteClick }, templateSelector) {
+  constructor({ data, selfId, handleCardClick, handleDeleteClick, handleLikeClick }, templateSelector) {
     this._id = data._id;
     this._link = data.link;
     this._name = data.name;
@@ -10,6 +8,7 @@ export default class Card {
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._handleDeleteClick = handleDeleteClick;
+    this._handleLikeClick = handleLikeClick;
     this._canDelete = data.owner._id === selfId;
     this._doLike = data.likes.some(like => like._id === selfId);
   }
@@ -22,16 +21,6 @@ export default class Card {
       .cloneNode(true);
 
     return cardElement;
-  }
-
-  _handleLikeClick() {
-    api.updateLikeCard(this._id, !this._likeElement.classList.contains('card__like_checked'))
-      .then(data => {
-        this._likeCount = data.likes.length;
-        this._likeCountElement.textContent = this._likeCount;
-      });
-
-    this._likeElement.classList.toggle('card__like_checked');
   }
 
   getId() {
@@ -60,7 +49,14 @@ export default class Card {
     });
 
     this._likeElement.addEventListener('click', () => {
-      this._handleLikeClick();
+      this._handleLikeClick(
+        this._id,
+        !this._likeElement.classList.contains('card__like_checked'),
+        cardData => {
+          this._likeCount = cardData.likes.length;
+          this._likeCountElement.textContent = this._likeCount;
+          this._likeElement.classList.toggle('card__like_checked');
+        });
     });
   }
 
